@@ -25,7 +25,7 @@ class Operation(TypedDict):
     date: Optional[str]  # operation Date
     side: OPERATIONSIDE  # Direction of the operation. Enum: [PAYIN, PAYOUT, TRANSFER]
     type: OPERATIONTYPE  # Type of an operation
-    # Enum: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # Enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
     status: OPERATIONSTATUS  # Status of an operation
     # Enum: [registered, waiting, cashed, cancelled, suspended, rejected]
     breakdownList: Optional[List[BreakDownSimple]]  # List of breakdown for this payment
@@ -33,7 +33,7 @@ class Operation(TypedDict):
     transactionId: str  # Reference for the operation
     creationDateTime: Optional[str]  # ISO 8601 format (ex: 20210325T082300+01:00)
     accountNumber: Optional[str]  # A string representing the account number
-    cachedCumulAmount: Optional[str]
+    cachedCumulAmount: Optional[str]  # Amount already cached
     orderReference: Optional[str]  # Marketplace reference for this order
     accountCurrencyCode: Optional[str]  # Currency code in 3 characters ISO format
     operationLabel: Optional[str]  # Label of the operation

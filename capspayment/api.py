@@ -10,6 +10,7 @@ from api_operations import ApiOperations
 from api_payin import ApiPayin
 from api_payment_account import ApiPaymentAccount
 from api_payout import ApiPayout
+from api_selfcare import ApiSelfCare
 from api_transfer import ApiTransfer
 from config import Config
 
@@ -62,3 +63,7 @@ class CAPSPaymentAPI:
     def transfer_api(self) -> ApiTransfer:
         """Get Transfer API"""
         return ApiTransfer(self.config)
+
+    def selfcare_api(self) -> ApiSelfCare:
+        """Get SelfCare API"""
+        return ApiSelfCare(self.config)

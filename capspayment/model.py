@@ -2,20 +2,12 @@
 Model
 """
 
-from typing import Literal, Optional, TypedDict
+from dataclasses import dataclass
+from typing import Any, Literal, Optional, TypedDict
 
-PAYMETHODKEY = Literal[
-    "SDD",
-    "SCT",
-    "INT",
-    "CARD",
-    "MT103",
-    "SDD B2B",
-    "Voucher",
-    "Remainder",
-    "SCT INST",
-    "PISP",
-]
+from config import Config
+
+PAYMETHODKEY = Literal["SDD", "SCT", "CARD", "SDD B2B", "PISP"]
 SEQUENCE = Literal["OOFF", "FRST", "RCUR", "FNAL"]
 
 TRANSACTIONSTATUS = Literal[
@@ -26,8 +18,10 @@ TRANSACTIONSTATUS = Literal[
     "canceled",
     "refused",
     "abandonned",
+    "refund",
 ]
-OPERATIONTYPE = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+OPERATIONTYPE = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "11"]
+MONTH = Literal["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 DAYOFMONTH = Literal[
     "1",
     "2",
@@ -35,6 +29,7 @@ DAYOFMONTH = Literal[
     "4",
     "5",
     "6",
+    "7",
     "8",
     "9",
     "10",
@@ -92,3 +87,15 @@ class BreakDown(TypedDict):
     sellerAccountNumber: str  # Account number of the merchant
     label: str  # Label for the breakdown
     commission: Optional[Commission]  # Commission information
+
+
+@dataclass
+class Request:
+    """Request Structure"""
+
+    method: str
+    url: str
+    data: Any
+    headers: dict
+    config: Config
+    multipart: Literal[True, False] = False

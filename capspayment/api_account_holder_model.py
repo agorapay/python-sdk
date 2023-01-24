@@ -2,12 +2,42 @@
 
 from typing import List, Literal, Optional, TypedDict
 
-DOCUMENTSTATUS = Literal["MISSING", "PARTIAL", "TOVALIDATE", "VALIDATED", "REFUSED"]
-ROLE = Literal["BE", "D", "MD", "AP", "CP"]
+ROLE = Literal["BE", "D", "MD", "CP"]
 GENDER = Literal["M", "F"]
 REGULATEDSOCIETY = Literal["Y", "N"]
 FILEEXT = Literal["JPEG", "JPG", "PNG", "PDF", "DOC"]
+FILEEXTUPLOAD = Literal["JPEG", "PNG", "PDF", "DOC", "XLS", "XLSX"]
 MANDATORY = Literal["Y", "N"]
+FILETYPE = Literal[
+    "PASSPORT",
+    "IDCARD_FRONT_BACK",
+    "COMPANY_REG",
+    "BANK_ID",
+    "COMPANY_REG_WORLD",
+    "OTHER_DOC",
+    "ACCOUNT_AGR",
+    "QUESTIONNAIRE",
+    "IDCARD_FRONT",
+    "IDCARD_BACK",
+    "NONPROFIT_REG",
+    "NONPROFIT_OJ",
+    "COMPANY_ART",
+    "REPORT_GEN_ASS",
+    "PERMANENT_RES",
+    "UBO_REG",
+    "SIRENE_REG",
+    "RECEIPT_APP",
+    "SIRENE_NOT",
+    "INDIVIDUAL_REG",
+    "PROPERTY_TAX",
+    "HOUSING_TAX",
+    "INVOICE",
+    "COOP_APP",
+    "PROOF_REG",
+    "COMPANY_CER_WORLD",
+    "COMPANY_ART_WORLD",
+    "UBO_REG_WORLD",
+]
 
 
 class Owner(TypedDict):
@@ -23,21 +53,10 @@ class Owner(TypedDict):
     gender: Optional[GENDER]  # M or F. Mandatory if socialReason not present
 
 
-class RequirementRequest(TypedDict):
-    """Requirement Request Structure"""
+class Role(TypedDict):
+    """Role Information"""
 
-    id: str  # Requirement identification number
-    mandatory: MANDATORY  # -Y if document must be provided -N if document is not mandatory
-    label: str  # Requirement description
-    fileExt: Optional[FILEEXT]  # Type of file provided in fileContent (PDF)
-    fileContent: Optional[str]  # Content of the document base64 encoded
-    status: Optional[
-        DOCUMENTSTATUS
-    ]  # Document status. Enum: [MISSING, PARTIAL, TOVALIDATE, VALIDATED, REFUSED]
-    receiptDate: Optional[str]  # Date of document reception in ISO8601 format
-    validationDate: Optional[
-        str
-    ]  # Date of validation of the document in ISO8601 format
+    role: Optional[ROLE]  # Physical person role
 
 
 class RequirementResponse(TypedDict):
@@ -45,6 +64,7 @@ class RequirementResponse(TypedDict):
 
     id: str  # Requirement identification number
     label: Optional[str]  # Requirement description
+    code: Optional[str]  # Requirement code identification
     fileExt: Optional[FILEEXT]  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
     fileContent: Optional[str]  # Content of the document base64 encoded
     fileType: str  # Type of docuemnt (National card identity, KBIS, ...)
@@ -55,9 +75,9 @@ class RequirementUploadRequest(TypedDict):
     """Requirement Upload Request Structure"""
 
     id: str  # Requirement identification number
-    fileExt: FILEEXT  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
-    fileContent: str  # Content of the document base64 encoded
-    fileType: str  # Type of docuemnt (National card identity, KBIS, ...)
+    fileExt: Optional[FILEEXTUPLOAD]  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
+    fileContent: Optional[str]  # Content of the document base64 encoded
+    fileType: FILETYPE  # Type of document
 
 
 class RegisterAccount(TypedDict):
@@ -86,7 +106,7 @@ class RegisterPersonRequest(TypedDict):
     lastName: str
     email: Optional[str]
     phoneNumber: Optional[str]
-    roles: List[ROLE]  # Role of a physical person. Enum: [BE, D, MD, AP, CP]
+    roles: List[Role]  # Role of a physical person. Enum: [BE, D, MD, CP]
     # BE : Beneficial owner, D : Manager, MD : Mandatary, AP : Protal admin
     # CP : Legal representative
     birthDate: Optional[str]  # Date of birth in YYYYMMAA format
@@ -107,9 +127,9 @@ class RegisterPersonUpdateRequest(TypedDict):
     gender: GENDER  # Person gender M or F. Enum: [M, F]
     firstName: str
     lastName: str
-    email: str
-    phoneNumber: str
-    roles: List[ROLE]  # Role of a physical person. Enum: [BE, D, MD, AP, CP]
+    email: Optional[str]
+    phoneNumber: Optional[str]
+    roles: List[Role]  # Role of a physical person. Enum: [BE, D, MD, CP]
     # BE : Beneficial owner, D : Manager, MD : Mandatary, AP : Protal admin
     # CP : Legal representative
     id: Optional[str]  # Id of previous registered person
@@ -125,7 +145,7 @@ class AccountHolderRegisterRequest(TypedDict):
     legalForm: str
     registrationNumber: str  # SIRET for France
     masterAddress: RegisterAddress
-    billingAddress: Optional[RegisterAddress]
+    commercialAddress: Optional[RegisterAddress]
     turnover: str  # Current or last year turnover in account currency code unit
     regulatedSociety: REGULATEDSOCIETY  # Y or N
     physicalPersons: List[
@@ -151,7 +171,6 @@ class AccountHolderRegisterResponse(TypedDict):
 class AccountHolderUnregisterRequest(TypedDict):
     """Data in input of accountHolder/unregister request"""
 
-    accountNumber: Optional[str]  # A string representing the account number
     requestId: str  # Id to identify processing request
 
 
@@ -161,9 +180,8 @@ class AccountHolderUpdateRequest(TypedDict):
     socialReason: Optional[str]  # Holder name
     compagnyName: Optional[str]  # Commercial name
     country: Optional[str]  # The ISO country code in 3 characters format
-    registrationNumber: Optional[str]  # SIRET for France
     masterAddress: Optional[RegisterAddress]
-    billingAddress: Optional[RegisterAddress]
+    commercialAddress: Optional[RegisterAddress]
     turnover: Optional[
         str
     ]  # Current or last year turnover in account currency code unit
@@ -171,7 +189,7 @@ class AccountHolderUpdateRequest(TypedDict):
     physicalPersons: Optional[
         List[RegisterPersonUpdateRequest]
     ]  # At least one person must be provided with CP role
-    account: RegisterAccount
+    account: Optional[RegisterAccount]
     currency: Optional[str]  # Currency code in 3 characters ISO format
     requestId: str  # Id to identify processing request
     owner: Optional[Owner]

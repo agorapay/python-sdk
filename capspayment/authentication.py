@@ -8,6 +8,7 @@ import json
 
 import utils
 from config import Config
+from model import Request
 
 
 def token_request(config: Config) -> tuple:
@@ -22,10 +23,9 @@ def token_request(config: Config) -> tuple:
             (config.token_user + ":" + config.token_password).encode("utf-8")
         ).decode("utf-8")
     }
+    req = Request(config.token_method, config.token_url, None, headers, config, False)
 
-    response = utils.simple_request(
-        config.token_method, config.token_url, None, headers, config
-    )
+    response = utils.simple_request(req)
 
     if response:
         now = datetime.datetime.utcnow().replace(microsecond=0)
