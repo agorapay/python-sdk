@@ -69,6 +69,7 @@ API links:
 | Payin | payin_api
 | Payment Account | payment_account_api
 | Payout | payout_api
+| SelfCare | selfcare_api
 | Transfer | transfer_api
 
 &nbsp;
@@ -136,6 +137,7 @@ You will find in this table which function to use for each API "PaymentAccount" 
 | /paymentAccount/payoutAuto   | ApiPaymentAccount.payout_auto(payload)       | POST
 | /paymentAccount/credit   | ApiPaymentAccount.credit(payload)       | POST
 | /paymentAccount/create   | ApiPaymentAccount.create(payload)       | POST
+| /paymentAccount/report   | ApiPaymentAccount.report(payload)       | GET
 
 &nbsp;
 
@@ -147,6 +149,17 @@ You will find in this table which function to use for each API "Payout" endpoint
 | Payout Endpoint      | SDK Functions | Method
 | ----------- | ----------- |----------- |
 | /payout/create      | ApiPayout.create(payload)       | POST
+
+&nbsp;
+
+List SDK functions to use for API SelfCare
+-------------------------------------------------
+
+You will find in this table which function to use for each API "SelfCare" endpoint :
+
+| SelfCare Endpoint      | SDK Functions | Method
+| ----------- | ----------- | ----------- |
+| /selfcare/init      | ApiSelfCare.init(payload)       | POST
 
 &nbsp;
 

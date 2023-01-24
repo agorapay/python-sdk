@@ -14,5 +14,5 @@ setup(
         "Topic :: Software Development :: Build Tools",
         "Programming Language :: Python :: 3.8",
     ],
-    install_requires=["requests"],
+    install_requires=["httpx"],
 )

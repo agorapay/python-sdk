@@ -3,7 +3,7 @@ Base
 """
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 from authentication import token_request
@@ -17,7 +17,13 @@ class BaseRequest:
 
     config: Config
 
-    def request(self, method: str, endpoint: str, data: Any) -> Any:
+    def request(
+        self,
+        method: str,
+        endpoint: str,
+        data: Any,
+        multipart: Literal[True, False] = False,
+    ) -> Any:
         """Call rest api method"""
         if not self.config or (self.config and self.config.check_config() != ""):
             return None
@@ -30,7 +36,7 @@ class BaseRequest:
                 token_value=token[0], token_expiry=token[1], token_id=token[2]
             )
 
-            response = custom_request(method, url, data, self.config)
+            response = custom_request(method, url, data, self.config, multipart)
         except httpx.HTTPStatusError as err:
             if err.response.status_code == 400:
                 return err.response.text
@@ -46,10 +52,10 @@ class BaseRequest:
             )
 
             try:
-                response = custom_request(method, url, data, self.config)
-            except httpx.HTTPStatusError as err:
+                response = custom_request(method, url, data, self.config, multipart)
+            except httpx.HTTPStatusError as err2:
                 return {
-                    "resultCode": str(err.response.status_code),
+                    "resultCode": str(err2.response.status_code),
                     "resultMessage": "",
                 }
         return response

@@ -2,13 +2,16 @@
 
 from typing import List, Literal, Optional, TypedDict
 
-from model import DAYOFMONTH, DAYOFWEEK, Amount
+from model import DAYOFMONTH, DAYOFWEEK, MONTH, Amount
 
-FILETYPE = Literal["JPEG", "JPG", "PNG", "PDF"]
-FREQUENCY = Literal["0", "1", "2", "3", "10"]
-STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
+FILETYPE = Literal["JPEG", "PNG", "PDF", "DOC", "XLS", "XLSX"]
+FREQUENCY = Literal["0", "1", "2", "3"]
 STATUS = Literal["A", "D", "R", "S"]
+STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
 PAYMETHODKEY = Literal["SCT"]
+PAYMETHODKEYIBAN = Literal["SCT", "SCT INST"]
+REPORTTYPE = Literal["ACCOUNT_STATEMENT", "INVOICE", "IC_FEE_REPORT"]
+REPORTFORMAT = Literal["P", "C"]
 
 
 class Account(TypedDict):
@@ -87,7 +90,7 @@ class PaymentAccountCreditRequest(TypedDict):
 
     accountNumber: str  # A string representing the account number
     amount: str  # Recharge amount
-    currency: Optional[str]  # Currency code in 3 characters ISO format
+    currency: str  # Currency code in 3 characters ISO format
     paymentMethodKey: PAYMETHODKEY  # Key identifier of the payment method type id
 
 
@@ -105,7 +108,7 @@ class PaymentAccountPayoutAutoRequest(TypedDict):
 
     accountNumber: Optional[str]  # A string representing the account number
     amount: str  # Recharge amount
-    frequency: FREQUENCY  # Enum: [0, 1, 2, 3, 10]
+    frequency: FREQUENCY  # Enum: [0, 1, 2, 3]
     # 0: deactivate 1: once a day 2: once a week 3: once a month 10: Automatic on threshold
     dayOfWeek: Optional[DAYOFWEEK]  # Between 0 and 6
     dayOfMonth: Optional[DAYOFMONTH]  # Between 1 et 31
@@ -123,8 +126,7 @@ class PaymentAccountSetIBANRequest(TypedDict):
     country: str  # The country code (in 3 letter format) of the IBAN account's owner
     postalCode: str  # The postal code of the IBAN account's owner
     socialReason: Optional[str]  # The name of the IBAN account's owner if compagny
-    fileType: FILETYPE  # Type of the file contening the proof document
-    # Enum: [JPEG, JPG, PNG, PDF]
+    fileType: Optional[FILETYPE]  # Type of the file contening the proof document
     fileContent: Optional[
         str
     ]  # The content of the file contening the proof in base64 encoding format
@@ -133,9 +135,9 @@ class PaymentAccountSetIBANRequest(TypedDict):
     paymentMethodAlias: Optional[
         str
     ]  # Current payment method alias to update. If not provided a new payment method is added
-    activationDate: Optional[
-        str
-    ]  # Date in the furtur to activate new IBAN. In YYYYMMDD format
+    paymentMethodKey: Optional[
+        PAYMETHODKEYIBAN
+    ]  # Key identifier of the payment method type id
 
 
 class PaymentAccountSetIBANResponse(TypedDict):
@@ -162,3 +164,35 @@ class PaymentAccountSetFloorLimitRequest(TypedDict):
 
     accountNumber: str  # A string representing the account number
     amount: Amount  # Amount structure
+
+
+class PaymentAccountReportRequest(TypedDict):
+    """Data in input of paymentAccount/report request"""
+
+    accountNumber: Optional[str]  # A string representing the account number
+    type: REPORTTYPE  # Type of report. Available values : ACCOUNT_STATEMENT, INVOICE, IC_FEE_REPORT
+    format: REPORTFORMAT  # Format of the report. Available values : P, C
+    year: str  # Year of the report in AAAA format. Must be less or equal to the current year.
+    month: Optional[
+        MONTH
+    ]  # Month of the report in MM format. Must be less or equal to the current month.
+
+
+class PaymentAccountReportResponse(TypedDict):
+    """Data in output of paymentAccount/report request"""
+
+    resultCode: str  # API operation result. This code is 0 in case of success
+    resultCodeMessage: Optional[str]  # The failure description
+    type: Optional[
+        REPORTTYPE
+    ]  # Type of report. Available values : ACCOUNT_STATEMENT, INVOICE, IC_FEE_REPORT
+    accountNumber: Optional[str]  # A string representing the account number
+    year: Optional[
+        str
+    ]  # Year of the report in AAAA format. Must be less or equal to the current year.
+    month: Optional[
+        MONTH
+    ]  # Month of the report in MM format. Must be less or equal to the current month.
+    fileContent: Optional[
+        str
+    ]  # The content of the file contening the proof in base64 encoding format

@@ -15,6 +15,12 @@ CAPTURE = Literal["1", "0", "Y", "N"]
 
 ALIAS = Literal["1", "0", "Y", "N"]
 
+RECURRENT = Literal["1", "0", "Y", "N"]
+
+PAGE = Literal["full", "iframe"]
+
+PAYMENTOPTIONS = Literal["cardOnFile", "withoutCardOnFile"]
+
 
 class Alias(TypedDict):
     """Alias Structure"""
@@ -38,7 +44,7 @@ class AliasSimple(TypedDict):
 class Cart(TypedDict):
     """Cart Structure"""
 
-    totalQuantity: Optional[str]  # number of article in cart
+    totalQuantity: str  # number of article in cart
 
 
 class Payer(TypedDict):
@@ -112,7 +118,7 @@ class Transaction(TypedDict):
     type: Optional[OPERATIONTYPE]  # Type of the operation
     # 1: Purchase 2: Refund 3: Manual
     # 4: Transfer 5: Payment 6: Reload/Payout
-    # 7: Authorization 8: Pre-authorization 9: Unpaid
+    # 7: Authorization 8: Pre-authorization 9: Unpaid 11: Fees
 
 
 class PayinPaymentRequest(TypedDict):
@@ -144,6 +150,7 @@ class PayinPaymentRequest(TypedDict):
     cbChallenge: Optional[CBCHALLENGE]  # Challenge negotiation for card payment.
     # 01: No preference, 02: No challenge required, 03: Desired challenge
     # 04: Required challenge
+    paymentOptions: Optional[PAYMENTOPTIONS]
 
 
 class PayinPaymentResponse(TypedDict):
@@ -281,7 +288,10 @@ class PayinAdjustPaymentRequest(TypedDict):
     breakdownList: Optional[List[BreakDown]]  # List of breakdown for this payment
     metaData: Optional[str]  # JSON data for the marketplace
     adjustAmount: Optional[Amount]
-    orderId: str  # Order id obtained in order creation and to provide in each next request
+    orderId: Optional[
+        str
+    ]  # Order id obtained in order creation and to provide in each next request
+    transactionId: Optional[str]  # Id of the payment transaction
 
 
 class PayinPaymentIframeRequest(TypedDict):
@@ -295,7 +305,7 @@ class PayinPaymentIframeRequest(TypedDict):
     capture: Optional[CAPTURE]  # Capture indicator. Set to "0" for authorization only
     metaData: Optional[str]  # JSON data for the marketplace
     recurrent: Optional[
-        str
+        RECURRENT
     ]  # "1" for recurrent payment "0" or absent if not a recurrent payment
     endToEndId: Optional[str]  # Use to identify transaction in SEPA transfer
     paymentMethodId: Optional[str]  # Identifier of tjhe payment method
@@ -307,15 +317,22 @@ class PayinPaymentIframeRequest(TypedDict):
     cbChallenge: Optional[CBCHALLENGE]  # Challenge negotiation for card payment.
     # 01: No preference, 02: No challenge required, 03: Desired challenge
     # 04: Required challenge
+    details: Optional[Details]
+    page: Optional[PAGE]
+    paymentOptions: Optional[PAYMENTOPTIONS]
 
 
 class PayinPaymentIframeResponse(TypedDict):
     """Data in output of payin/paymentIframe request"""
 
     resultCode: str  # API operation result. This code is 0 in case of success
-    orderId: str  # Order id obtained in order creation and to provide in each next request
+    orderId: Optional[
+        str
+    ]  # Order id obtained in order creation and to provide in each next request
     resultCodeMessage: Optional[str]  # The failure description
-    authenticationCode: str  # Authentification Code to use to open user iframe
+    authenticationCode: Optional[
+        str
+    ]  # Authentification Code to use to open user iframe
     site: Optional[str]  # Site name or number
     url: Optional[str]  # Url to connect iframe to
 
@@ -369,8 +386,8 @@ class PayinTicketRequest(TypedDict):
 
     transactionId: str  # Id of the card transaction
     format: str  # Ticket format : J JSON, P : PDF
-    message: Optional[str]  # Message to set in the bottom of the ticket
     type: str  # Ticket type : C client, M : merchant
+    message: Optional[str]  # Message to set in the bottom of the ticket
 
 
 class PayinTicketResponse(TypedDict):
