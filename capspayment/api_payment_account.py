@@ -6,19 +6,21 @@ from dataclasses import dataclass
 from typing import Literal, Union
 
 import utils
-from api_payment_account_model import (PaymentAccountCreditRequest,
-                                       PaymentAccountCreditResponse,
-                                       PaymentAccountDisableIBANRequest,
-                                       PaymentAccountListRequest,
-                                       PaymentAccountListResponse,
-                                       PaymentAccountPayoutAutoRequest,
-                                       PaymentAccountReportRequest,
-                                       PaymentAccountReportResponse,
-                                       PaymentAccountRequest,
-                                       PaymentAccountResponse,
-                                       PaymentAccountSetFloorLimitRequest,
-                                       PaymentAccountSetIBANRequest,
-                                       PaymentAccountSetIBANResponse)
+from api_payment_account_model import (
+    PaymentAccountCreditRequest,
+    PaymentAccountCreditResponse,
+    PaymentAccountDisableIBANRequest,
+    PaymentAccountListRequest,
+    PaymentAccountListResponse,
+    PaymentAccountPayoutAutoRequest,
+    PaymentAccountReportRequest,
+    PaymentAccountReportResponse,
+    PaymentAccountRequest,
+    PaymentAccountResponse,
+    PaymentAccountSetFloorLimitRequest,
+    PaymentAccountSetIBANRequest,
+    PaymentAccountSetIBANResponse,
+)
 from base import BaseRequest
 from model import Response
 

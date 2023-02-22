@@ -6,15 +6,17 @@ from dataclasses import dataclass
 from typing import Literal, Union
 
 import utils
-from api_account_holder_model import (AccountHolderRegisterRequest,
-                                      AccountHolderRegisterResponse,
-                                      AccountHolderRegistrationDetailsRequest,
-                                      AccountHolderRegistrationDetailsResponse,
-                                      AccountHolderUnregisterRequest,
-                                      AccountHolderUpdateRequest,
-                                      AccountHolderUpdateResponse,
-                                      AccountHolderUploadDocumentRequest,
-                                      AccountHolderUploadDocumentResponse)
+from api_account_holder_model import (
+    AccountHolderRegisterRequest,
+    AccountHolderRegisterResponse,
+    AccountHolderRegistrationDetailsRequest,
+    AccountHolderRegistrationDetailsResponse,
+    AccountHolderUnregisterRequest,
+    AccountHolderUpdateRequest,
+    AccountHolderUpdateResponse,
+    AccountHolderUploadDocumentRequest,
+    AccountHolderUploadDocumentResponse,
+)
 from base import BaseRequest
 from model import Response
 

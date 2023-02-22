@@ -5,20 +5,29 @@ Payin API
 from dataclasses import dataclass
 from typing import Union
 
-from api_payin_model import (PayinAdjustPaymentRequest, PayinCancelRequest,
-                             PayinCancelResponse, PayinCaptureRequest,
-                             PayinCaptureResponse, PayinMandateRequest,
-                             PayinMandateResponse, PayinOrderDetailsRequest,
-                             PayinOrderDetailsResponse,
-                             PayinPaymentDetailsRequest,
-                             PayinPaymentDetailsResponse,
-                             PayinPaymentIframeRequest,
-                             PayinPaymentIframeResponse,
-                             PayinPaymentMethodsRequest,
-                             PayinPaymentMethodsResponse, PayinPaymentRequest,
-                             PayinPaymentResponse, PayinRefundRequest,
-                             PayinRefundResponse, PayinTicketRequest,
-                             PayinTicketResponse)
+from api_payin_model import (
+    PayinAdjustPaymentRequest,
+    PayinCancelRequest,
+    PayinCancelResponse,
+    PayinCaptureRequest,
+    PayinCaptureResponse,
+    PayinMandateRequest,
+    PayinMandateResponse,
+    PayinOrderDetailsRequest,
+    PayinOrderDetailsResponse,
+    PayinPaymentDetailsRequest,
+    PayinPaymentDetailsResponse,
+    PayinPaymentIframeRequest,
+    PayinPaymentIframeResponse,
+    PayinPaymentMethodsRequest,
+    PayinPaymentMethodsResponse,
+    PayinPaymentRequest,
+    PayinPaymentResponse,
+    PayinRefundRequest,
+    PayinRefundResponse,
+    PayinTicketRequest,
+    PayinTicketResponse,
+)
 from base import BaseRequest
 from model import Response
 
