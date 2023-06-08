@@ -140,7 +140,7 @@ class AccountHolderRegisterRequest(TypedDict):
     """Data in input of accountHolder/register request"""
 
     socialReason: str  # Holder name
-    compagnyName: Optional[str]  # Commercial name
+    companyName: Optional[str]  # Commercial name
     country: str  # The ISO country code in 3 characters format
     legalForm: str
     registrationNumber: str  # SIRET for France
@@ -178,7 +178,7 @@ class AccountHolderUpdateRequest(TypedDict):
     """Data in input of accountHolder/update request"""
 
     socialReason: Optional[str]  # Holder name
-    compagnyName: Optional[str]  # Commercial name
+    companyName: Optional[str]  # Commercial name
     country: Optional[str]  # The ISO country code in 3 characters format
     masterAddress: Optional[RegisterAddress]
     commercialAddress: Optional[RegisterAddress]

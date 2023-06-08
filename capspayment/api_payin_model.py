@@ -320,6 +320,7 @@ class PayinPaymentIframeRequest(TypedDict):
     details: Optional[Details]
     page: Optional[PAGE]
     paymentOptions: Optional[PAYMENTOPTIONS]
+    reason: Optional[str]  # Operation label transmited in payment system
 
 
 class PayinPaymentIframeResponse(TypedDict):

@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, TypedDict
 from model import DAYOFMONTH, DAYOFWEEK, MONTH, Amount
 
 FILETYPE = Literal["JPEG", "PNG", "PDF", "DOC", "XLS", "XLSX"]
-FREQUENCY = Literal["0", "1", "2", "3"]
+FREQUENCY = Literal["0", "1", "2", "3", "10"]
 STATUS = Literal["A", "D", "R", "S"]
 STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
 PAYMETHODKEY = Literal["SCT"]
@@ -106,13 +106,13 @@ class PaymentAccountCreditResponse(TypedDict):
 class PaymentAccountPayoutAutoRequest(TypedDict):
     """Data in input of paymentAccount/payoutAuto request"""
 
-    accountNumber: Optional[str]  # A string representing the account number
+    accountNumber: str  # A string representing the account number
     amount: str  # Recharge amount
-    frequency: FREQUENCY  # Enum: [0, 1, 2, 3]
+    frequency: FREQUENCY  # Enum: [0, 1, 2, 3, 10]
     # 0: deactivate 1: once a day 2: once a week 3: once a month 10: Automatic on threshold
     dayOfWeek: Optional[DAYOFWEEK]  # Between 0 and 6
     dayOfMonth: Optional[DAYOFMONTH]  # Between 1 et 31
-    paymentMethodAlias: Optional[str]  # Alias for the payment method
+    paymentMethodAlias: str  # Alias for the payment method
 
 
 class PaymentAccountSetIBANRequest(TypedDict):
