@@ -37,6 +37,8 @@ FILETYPE = Literal[
     "COMPANY_CER_WORLD",
     "COMPANY_ART_WORLD",
     "UBO_REG_WORLD",
+    "SYND_ID",
+    "REPORT_GEN_SYND",
 ]
 
 

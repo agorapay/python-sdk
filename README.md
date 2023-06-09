@@ -65,6 +65,7 @@ API links:
 | API | Method
 | ----------- | ----------- |
 | Account Holder | account_holder_api
+| Mandate | mandate_api
 | Operations | operations_api
 | Payin | payin_api
 | Payment Account | payment_account_api
@@ -86,6 +87,17 @@ You will find in this table which function to use for each API "AccountHolder" e
 | /accountHolder/update      | ApiAccountHolder.update(payload)       | POST
 | /accountHolder/uploadDocument      | ApiAccountHolder.upload_document(payload)       | POST
 | /accountHolder/registrationDetails      | ApiAccountHolder.registration_details(payload)       | GET
+
+&nbsp;
+
+List SDK functions to use for API Mandate
+-------------------------------------------------
+
+You will find in this table which function to use for each API "Mandate" endpoint :
+
+| Mandate Endpoint      | SDK Functions | Method
+| ----------- | ----------- | ----------- |
+| /mandate/create      | ApiMandate.create(payload)       | POST
 
 &nbsp;
 

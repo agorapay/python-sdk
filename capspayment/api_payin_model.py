@@ -2,7 +2,15 @@
 
 from typing import List, Literal, Optional, TypedDict
 
-from model import OPERATIONTYPE, SEQUENCE, TRANSACTIONSTATUS, Amount, BreakDown
+from model import (
+    OPERATIONTYPE,
+    TRANSACTIONSTATUS,
+    Amount,
+    BreakDown,
+    Details,
+    Payer,
+    PaymentMethodSimple,
+)
 
 ORDERSTATUS = Literal[
     "created", "pending_payment", "partial_complete", "complete", "canceled"
@@ -17,7 +25,11 @@ ALIAS = Literal["1", "0", "Y", "N"]
 
 RECURRENT = Literal["1", "0", "Y", "N"]
 
-PAGE = Literal["full", "iframe"]
+PAGE = Literal["full"]
+
+TYPE = Literal["1", "2"]
+
+MODE = Literal["PROD", "TEST"]
 
 PAYMENTOPTIONS = Literal["cardOnFile", "withoutCardOnFile"]
 
@@ -45,46 +57,6 @@ class Cart(TypedDict):
     """Cart Structure"""
 
     totalQuantity: str  # number of article in cart
-
-
-class Payer(TypedDict):
-    """Payer Structure"""
-
-    IPAddress: Optional[str]  # IP Address of the customer
-    reference: str  # Reference of the customer from the marketplace
-    userAgent: Optional[str]  # The browser information use to request the payment
-    language: Optional[str]  # The default language of the browser.
-    # The first two characters are used to identify the language code
-
-
-class Details(TypedDict):
-    """Payment Details Information"""
-
-    firstName: Optional[str]
-    lastName: Optional[str]
-    address: Optional[str]  # Road name and number
-    city: Optional[str]
-    postalCode: Optional[str]
-    country: Optional[str]  # Country in 3 letters ISO format
-    iban: Optional[str]
-    email: Optional[str]
-    state: Optional[str]
-    gender: Optional[str]
-    phoneNumber: Optional[str]
-    sequence: Optional[SEQUENCE]  # Mandate sequence. Enum: [ OOFF, FRST, RCUR, FNAL ]
-    reference: Optional[
-        str
-    ]  # For payment with mandate, this field is the reference to the mandate for sequence
-    # RCUR or LAST. For payment with card, this field is the transactionId of the first
-    # authorization transaction
-    socialReason: Optional[str]  # Compagny name
-    address2: Optional[str]  # Additional address
-
-
-class PaymentMethodSimple(TypedDict):
-    """Payment Method Simple Structure"""
-
-    id: str  # Id of the payment method
 
 
 class PaymentMethod(TypedDict):
@@ -406,10 +378,10 @@ class PayinTicketResponse(TypedDict):
     ]  # Date of the requested operation. The format must be YYYYMMDD
     operationTime: Optional[str]  # Operation time in HH:MM:SS format
     safe: Optional[str]  # Y if 3DS is verified
-    type: Optional[str]  # 1: DEBIT, 2: CREDIT
+    type: Optional[TYPE]  # 1: DEBIT, 2: CREDIT
     authNumber: Optional[str]
     transNumber: Optional[str]
     amount: Optional[Amount]  # Amount structure
-    mode: Optional[str]  # PROD or TEST
+    mode: Optional[MODE]  # PROD or TEST
     fileContent: Optional[str]  # PDF file content base64 encoded, if format is P
     contract: Optional[str]  # Payment partner contract number
