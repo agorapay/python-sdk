@@ -2,5 +2,5 @@
 Version
 """
 
-__version__ = "1.23"
-RELEASE = "V01_23"
+__version__ = "1.25"
+RELEASE = "V01_25"

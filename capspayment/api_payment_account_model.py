@@ -10,7 +10,7 @@ STATUS = Literal["A", "D", "R", "S"]
 STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
 PAYMETHODKEY = Literal["SCT"]
 PAYMETHODKEYIBAN = Literal["SCT", "SCT INST"]
-REPORTTYPE = Literal["ACCOUNT_STATEMENT", "INVOICE", "IC_FEE_REPORT"]
+REPORTTYPE = Literal["STATEMENT", "INVOICE", "RAFEC", "RMFEC"]
 REPORTFORMAT = Literal["P", "C"]
 
 
@@ -170,7 +170,7 @@ class PaymentAccountReportRequest(TypedDict):
     """Data in input of paymentAccount/report request"""
 
     accountNumber: Optional[str]  # A string representing the account number
-    type: REPORTTYPE  # Type of report. Available values : ACCOUNT_STATEMENT, INVOICE, IC_FEE_REPORT
+    type: REPORTTYPE  # Type of report. Available values : STATEMENT, INVOICE, RAFEC, RMFEC
     format: REPORTFORMAT  # Format of the report. Available values : P, C
     year: str  # Year of the report in AAAA format. Must be less or equal to the current year.
     month: Optional[

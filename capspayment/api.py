@@ -6,6 +6,7 @@ import logging
 import sys
 
 from api_account_holder import ApiAccountHolder
+from api_mandate import ApiMandate
 from api_operations import ApiOperations
 from api_payin import ApiPayin
 from api_payment_account import ApiPaymentAccount
@@ -67,3 +68,7 @@ class CAPSPaymentAPI:
     def selfcare_api(self) -> ApiSelfCare:
         """Get SelfCare API"""
         return ApiSelfCare(self.config)
+
+    def mandate_api(self) -> ApiMandate:
+        """Get Mandate API"""
+        return ApiMandate(self.config)
