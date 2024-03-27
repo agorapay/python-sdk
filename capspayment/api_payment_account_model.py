@@ -4,7 +4,6 @@ from typing import List, Literal, Optional, TypedDict
 
 from model import DAYOFMONTH, DAYOFWEEK, MONTH, Amount
 
-FILETYPE = Literal["JPEG", "PNG", "PDF", "DOC", "XLS", "XLSX"]
 FREQUENCY = Literal["0", "1", "2", "3", "10"]
 STATUS = Literal["A", "D", "R", "S"]
 STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
@@ -126,10 +125,6 @@ class PaymentAccountSetIBANRequest(TypedDict):
     country: str  # The country code (in 3 letter format) of the IBAN account's owner
     postalCode: str  # The postal code of the IBAN account's owner
     socialReason: Optional[str]  # The name of the IBAN account's owner if compagny
-    fileType: Optional[FILETYPE]  # Type of the file contening the proof document
-    fileContent: Optional[
-        str
-    ]  # The content of the file contening the proof in base64 encoding format
     iban: str  # The new IBAN
     currency: str  # Currency code in 3 characters ISO format
     paymentMethodAlias: Optional[

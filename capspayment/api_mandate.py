@@ -5,7 +5,11 @@ Mandate API
 from dataclasses import dataclass
 from typing import Union
 
-from api_mandate_model import MandateCreateRequest, MandateCreateResponse
+from api_mandate_model import (
+    MandateCreateRequest,
+    MandateCreateResponse,
+    MandateUpdateRequest,
+)
 from base import BaseRequest
 from model import Response
 
@@ -17,5 +21,9 @@ class ApiMandate(BaseRequest):
     def create(
         self, payload: MandateCreateRequest
     ) -> Union[MandateCreateResponse, Response]:
-        """Generate a SEPA Direct debit mandate B2C or B2B, do not generate any transactions"""
+        """Generate a new direct debit mandate without payment"""
         return self.request("POST", "/mandate/create", payload)
+
+    def update(self, payload: MandateUpdateRequest) -> Response:
+        """Update information for an existing mandate"""
+        return self.request("POST", "/mandate/update", payload)

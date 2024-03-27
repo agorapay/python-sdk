@@ -3,7 +3,7 @@ Model
 """
 
 from dataclasses import dataclass
-from typing import Any, Literal, Optional, TypedDict
+from typing import Any, List, Literal, Optional, TypedDict
 
 from config import Config
 
@@ -57,6 +57,8 @@ DAYOFMONTH = Literal[
 ]
 DAYOFWEEK = Literal["0", "1", "2", "3", "4", "5", "6"]
 ACCOUNTTYPE = Literal["1", "3", "4", "5", "6", "13", "14", "15", "16"]
+PAYMENTMETHODTYPEID = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
+INSTANTPAYMENT = Literal["EXPECTED"]
 
 
 class Response(TypedDict):
@@ -105,6 +107,46 @@ class Payer(TypedDict):
     # The first two characters are used to identify the language code
 
 
+class PayerSimple(TypedDict):
+    """Payer Simple Structure"""
+
+    reference: str  # Reference of the customer from the marketplace
+    language: Optional[str]  # The default language of the browser.
+
+
+class AliasSimple(TypedDict):
+    """Alias Simple Structure"""
+
+    id: str  # Identifier for the alias
+
+
+class Alias(TypedDict):
+    """Alias Structure"""
+
+    id: str  # Identifier for the alias
+    expirationDate: Optional[str]  # format MMYY
+    maskedPan: Optional[
+        str
+    ]  # First 6 and last 4 digits of the PAN for card or Masqued IABN for SDD
+    label: Optional[str]  # Label of the alias
+    brand: Optional[str]  # Card brand (CB, VISA, MASTERCARD) or bank code for IBAN
+    bankCode: Optional[str]
+
+
+class PaymentMethod(TypedDict):
+    """Payment Method Structure"""
+
+    aliasList: Optional[List[Alias]]
+    id: str  # Id of the payment method
+    label: Optional[str]  # Label of the payment Method
+    type: Optional[
+        PAYMENTMETHODTYPEID
+    ]  # Id of the type of payment method. Enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    # 1: Sepa Direct Debit 2: Sepa Credit Transfer 3: Transfer 4: Card 5: SWIFT
+    # 6: Sepa Direct Debit B2B 7: Letter of credit 8: Voucher 9: Remainder
+    # 10: SCT instant 11: PISP
+
+
 class Details(TypedDict):
     """Payment Details Information"""
 
@@ -127,6 +169,8 @@ class Details(TypedDict):
     # authorization transaction
     socialReason: Optional[str]  # Compagny name
     address2: Optional[str]  # Additional address
+    bic: Optional[str]  # Business Identifier Code allocated to a financial institution
+    # by the ISO 9362 Registration Authority
 
 
 @dataclass

@@ -3,19 +3,22 @@
 from typing import List, Literal, Optional, TypedDict
 
 from model import (
+    INSTANTPAYMENT,
     OPERATIONTYPE,
     TRANSACTIONSTATUS,
+    AliasSimple,
     Amount,
     BreakDown,
     Details,
     Payer,
+    PayerSimple,
+    PaymentMethod,
     PaymentMethodSimple,
 )
 
 ORDERSTATUS = Literal[
     "created", "pending_payment", "partial_complete", "complete", "canceled"
 ]
-PAYMENTMETHODTYPEID = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
 
 CBCHALLENGE = Literal["01", "02", "03", "04"]
 
@@ -25,7 +28,7 @@ ALIAS = Literal["1", "0", "Y", "N"]
 
 RECURRENT = Literal["1", "0", "Y", "N"]
 
-PAGE = Literal["full"]
+PAGE = Literal["full", "iframe "]
 
 TYPE = Literal["1", "2"]
 
@@ -33,51 +36,13 @@ MODE = Literal["PROD", "TEST"]
 
 PAYMENTOPTIONS = Literal["cardOnFile", "withoutCardOnFile"]
 
-
-class Alias(TypedDict):
-    """Alias Structure"""
-
-    id: str  # Identifier for the alias
-    expirationDate: Optional[str]  # format MMYY
-    maskedPan: Optional[
-        str
-    ]  # First 6 and last 4 digits of the PAN for card or Masqued IABN for SDD
-    label: Optional[str]  # Label of the alias
-    brand: Optional[str]  # Card brand (CB, VISA, MASTERCARD) or bank code for IBAN
-    bankCode: Optional[str]
-
-
-class AliasSimple(TypedDict):
-    """Alias Simple Structure"""
-
-    id: str  # Identifier for the alias
+RELOADSEQUENCE = Literal["RCUR", "FNAL"]
 
 
 class Cart(TypedDict):
     """Cart Structure"""
 
     totalQuantity: str  # number of article in cart
-
-
-class PaymentMethod(TypedDict):
-    """Payment Method Structure"""
-
-    aliasList: Optional[List[Alias]]
-    id: str  # Id of the payment method
-    label: Optional[str]  # Label of the payment Method
-    type: Optional[
-        PAYMENTMETHODTYPEID
-    ]  # Id of the type of payment method. Enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    # 1: Sepa Direct Debit 2: Sepa Credit Transfer 3: Transfer 4: Card 5: SWIFT
-    # 6: Sepa Direct Debit B2B 7: Letter of credit 8: Voucher 9: Remainder
-    # 10: SCT instant 11: PISP
-
-
-class PayerSimple(TypedDict):
-    """Payer Simple Structure"""
-
-    reference: str  # Reference of the customer from the marketplace
-    language: Optional[str]  # The default language of the browser.
 
 
 class Transaction(TypedDict):
@@ -123,6 +88,7 @@ class PayinPaymentRequest(TypedDict):
     # 01: No preference, 02: No challenge required, 03: Desired challenge
     # 04: Required challenge
     paymentOptions: Optional[PAYMENTOPTIONS]
+    instantPayment: Optional[INSTANTPAYMENT]  # Force Instant Payment for SCT
 
 
 class PayinPaymentResponse(TypedDict):
@@ -385,3 +351,25 @@ class PayinTicketResponse(TypedDict):
     mode: Optional[MODE]  # PROD or TEST
     fileContent: Optional[str]  # PDF file content base64 encoded, if format is P
     contract: Optional[str]  # Payment partner contract number
+
+
+class PayinReloadRequest(TypedDict):
+    """Data in input of payin/reload request"""
+
+    accountNumber: str  # A string representing the account number
+    paymentMethodAlias: str  # Alias identifying a previously registered payment method
+    reason: Optional[str]  # Reason of the actual reload
+    endToEndId: Optional[str]  # Use to identify transaction in SEPA transfer
+    amount: str  # Recharge amount
+    currency: str  # Currency code in 3 characters ISO format
+    sequence: RELOADSEQUENCE  # Mandate sequence. Enum: [ RCUR, FNAL ]
+    reference: str  # Mandate reference
+
+
+class PayinReloadResponse(TypedDict):
+    """Data in output of payin/reload request"""
+
+    resultCode: str  # API operation result. This code is 0 in case of success
+    resultCodeMessage: Optional[str]  # The failure description
+    transactionId: Optional[str]  # Id of the payment transaction
+    transactionStatus: Optional[TRANSACTIONSTATUS]  # Status of a transaction
