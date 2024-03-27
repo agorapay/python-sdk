@@ -10,6 +10,7 @@ from api_mandate import ApiMandate
 from api_operations import ApiOperations
 from api_payin import ApiPayin
 from api_payment_account import ApiPaymentAccount
+from api_payment_method import ApiPaymentMethod
 from api_payout import ApiPayout
 from api_selfcare import ApiSelfCare
 from api_transfer import ApiTransfer
@@ -56,6 +57,10 @@ class CAPSPaymentAPI:
     def payment_account_api(self) -> ApiPaymentAccount:
         """Get Payment Account API"""
         return ApiPaymentAccount(self.config)
+
+    def payment_method_api(self) -> ApiPaymentMethod:
+        """Get Payment Method API"""
+        return ApiPaymentMethod(self.config)
 
     def payout_api(self) -> ApiPayout:
         """Get Payout API"""

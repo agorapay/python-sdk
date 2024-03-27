@@ -25,6 +25,8 @@ from api_payin_model import (
     PayinPaymentResponse,
     PayinRefundRequest,
     PayinRefundResponse,
+    PayinReloadRequest,
+    PayinReloadResponse,
     PayinTicketRequest,
     PayinTicketResponse,
 )
@@ -99,3 +101,9 @@ class ApiPayin(BaseRequest):
     ) -> Union[PayinTicketResponse, Response]:
         """Get card payment ticket"""
         return self.request("GET", "/payin/ticket", payload)
+
+    def reload(
+        self, payload: PayinReloadRequest
+    ) -> Union[PayinReloadResponse, Response]:
+        """Credit payment account by PayIn SEPA Direct Debit (SDD) for B2C"""
+        return self.request("POST", "/payin/reload", payload)

@@ -69,6 +69,7 @@ API links:
 | Operations | operations_api
 | Payin | payin_api
 | Payment Account | payment_account_api
+| Payment Method | payment_method_api
 | Payout | payout_api
 | SelfCare | selfcare_api
 | Transfer | transfer_api
@@ -98,6 +99,7 @@ You will find in this table which function to use for each API "Mandate" endpoin
 | Mandate Endpoint      | SDK Functions | Method
 | ----------- | ----------- | ----------- |
 | /mandate/create      | ApiMandate.create(payload)       | POST
+| /mandate/update      | ApiMandate.update(payload)       | POST
 
 &nbsp;
 
@@ -130,6 +132,7 @@ You will find in this table which function to use for each API "Payin" endpoint 
 | /payin/refund   | ApiPayin.refund(payload)        | POST
 | /payin/mandate   | ApiPayin.mandate(payload)        | GET
 | /payin/ticket   | ApiPayin.ticket(payload)        | GET
+| /payin/reload   | ApiPayin.reload(payload)        | POST
 
 &nbsp;
 
@@ -150,6 +153,20 @@ You will find in this table which function to use for each API "PaymentAccount" 
 | /paymentAccount/credit   | ApiPaymentAccount.credit(payload)       | POST
 | /paymentAccount/create   | ApiPaymentAccount.create(payload)       | POST
 | /paymentAccount/report   | ApiPaymentAccount.report(payload)       | GET
+
+&nbsp;
+
+List SDK functions to use for API Payment Method
+-------------------------------------------------
+
+You will find in this table which function to use for each API "Payment Method" endpoint :
+
+| Payment Method Endpoint      | SDK Functions | Method
+| ----------- | ----------- | ----------- |
+| /paymentMethod/removeAlias      | ApiPaymentMethod.remove_alias(payload)       | POST
+| /paymentMethod/getAlias      | ApiPaymentMethod.get_alias(payload)       | POST
+| /paymentMethod/list      | ApiPaymentMethod.payment_method_list(payload)       | POST
+| /paymentMethod/getIBAN      | ApiPaymentMethod.get_iban(payload)       | POST
 
 &nbsp;
 
