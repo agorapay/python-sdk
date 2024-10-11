@@ -78,7 +78,6 @@ class RequirementUploadRequest(TypedDict):
 
     id: str  # Requirement identification number
     fileExt: Optional[FILEEXTUPLOAD]  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
-    fileContent: Optional[str]  # Content of the document base64 encoded
     fileType: FILETYPE  # Type of document
 
 
