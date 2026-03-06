@@ -2,7 +2,7 @@
 
 from typing import List, Literal, Optional, TypedDict
 
-from model import ACCOUNTTYPE, OPERATIONTYPE, PAYMETHODKEY, Amount
+from model import ACCOUNTTYPE, OPERATIONTYPE, PAYMETHODKEY, Amount, Commission
 
 OPERATIONSIDE = Literal["PAYIN", "PAYOUT", "TRANSFER"]
 OPERATIONSTATUS = Literal[
@@ -14,6 +14,7 @@ class BreakDownSimple(TypedDict):
     """Break Down Simple Structure"""
 
     amount: Amount  # Amount structure
+    commission: Optional[Commission]  # Commission information
     sellerAccountNumber: str  # Account number of the merchant
     label: str  # Label for the breakdown
 
@@ -40,21 +41,19 @@ class Operation(TypedDict):
     relatedMsgStatusLabel: Optional[str]  # Status explanation
     thirdPartyName: Optional[str]
     accountType: Optional[ACCOUNTTYPE]  # Type of account
-    # 1: principal
-    # 3: waiting
-    # 4: suspense
-    # 5: change
-    # 6: commission
-    # 13: voucher
-    # 14: reliquat
-    # 15: autorization
-    # 16: pre-autorization
-    # Enum: [ 1, 3, 4, 5, 6, 13, 14, 15, 16 ]
     accountCptNumber: Optional[str]  # A string representing the account number
     accountCptTypeLabel: Optional[ACCOUNTTYPE]  # Type of account
-    # Enum: [ 1, 3, 4, 5, 6, 13, 14, 15, 16 ]
     accountCptCurrencyCode: Optional[str]  # Currency code in 3 characters ISO format
     thirdPartyCptName: Optional[str]
+    paymentMethodKey: Optional[
+        PAYMETHODKEY
+    ]  # Key identifier of the payment method type id
+    internalRemittance: Optional[str]  # Internal Remittance information
+    iban: Optional[str]  # International Bank Account Number
+    bic: Optional[str]  # Business Identifier Code allocated to a financial institution
+    payerRef: Optional[str]
+    endToEndId: Optional[str]  # Use to identify transaction in SEPA transfer
+    remittanceInformation: Optional[str]
 
 
 class OperationsListRequest(TypedDict):
@@ -76,6 +75,7 @@ class OperationsListRequest(TypedDict):
     ]  # Key identifier of the payment method type id
     sellerAccountNumber: Optional[str]  # Account number of the merchant
     parentAccountNumber: Optional[str]  # A string representing the account number
+    internalRemittance: Optional[str]  # Internal Remittance information
 
 
 class OperationsListResponse(TypedDict):

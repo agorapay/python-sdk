@@ -20,6 +20,7 @@ from api_payment_account_model import (
     PaymentAccountSetFloorLimitRequest,
     PaymentAccountSetIBANRequest,
     PaymentAccountSetIBANResponse,
+    PaymentAccountSetAuthorizedOverdraftRequest,
 )
 from base import BaseRequest
 from model import Response
@@ -103,3 +104,9 @@ class ApiPaymentAccount(BaseRequest):
     ) -> Union[PaymentAccountReportResponse, Response]:
         """Get account report"""
         return self.request("GET", "/paymentAccount/report", payload)
+
+    def set_authorized_overdraft(
+            self, payload: PaymentAccountSetAuthorizedOverdraftRequest
+    ) -> Response:
+        """Function to update authorized OverDraft Amount"""
+        return self.request("POST", "/paymentAccount/setAuthorizedOverdraft", payload)

@@ -6,10 +6,12 @@ from model import (
     INSTANTPAYMENT,
     OPERATIONTYPE,
     TRANSACTIONSTATUS,
-    AliasSimple,
+    UNSIGNIFICANTAMOUNT,
+    AliasOption,
     Amount,
     BreakDown,
     Details,
+    DetailsNoIban,
     Payer,
     PayerSimple,
     PaymentMethod,
@@ -68,7 +70,7 @@ class PayinPaymentRequest(TypedDict):
     orderReference: Optional[str]  # Marketplace reference for this order
     orderCountryCode: Optional[str]  # The ISO country code in 3 characters format
     breakdownList: Optional[List[BreakDown]]  # List of breakdown for this payment
-    alias: Optional[AliasSimple]
+    alias: Optional[AliasOption]
     metaData: Optional[str]  # JSON data for the marketplace
     payer: Optional[Payer]
     details: Optional[Details]
@@ -89,6 +91,7 @@ class PayinPaymentRequest(TypedDict):
     # 04: Required challenge
     paymentOptions: Optional[PAYMENTOPTIONS]
     instantPayment: Optional[INSTANTPAYMENT]  # Force Instant Payment for SCT
+    unsignificantAmount: Optional[UNSIGNIFICANTAMOUNT]  # Unsignificant amount flag
 
 
 class PayinPaymentResponse(TypedDict):
@@ -175,6 +178,7 @@ class PayinCaptureResponse(TypedDict):
     orderStatus: ORDERSTATUS  # Status of an order
     # Enum: [created, pending_payment, partial_complete, complete, canceled]
     transactionList: List[Transaction]  # List of the order transactions
+    transactionId: str  # Id of the payment transaction
     resultCodeMessage: Optional[str]  # The failure description
     orderId: str  # Order id obtained in order creation and to provide in each next request
 
@@ -195,6 +199,7 @@ class PayinCancelResponse(TypedDict):
         ORDERSTATUS
     ]  # Status of an order. Enum: [created, pending_payment, partial_complete, complete, canceled]
     transactionList: Optional[List[Transaction]]  # List of the order transactions
+    transactionId: Optional[str]  # Id of the payment transaction
     resultCodeMessage: Optional[str]  # The failure description
 
 
@@ -255,10 +260,15 @@ class PayinPaymentIframeRequest(TypedDict):
     cbChallenge: Optional[CBCHALLENGE]  # Challenge negotiation for card payment.
     # 01: No preference, 02: No challenge required, 03: Desired challenge
     # 04: Required challenge
-    details: Optional[Details]
+    details: Optional[DetailsNoIban]
     page: Optional[PAGE]
     paymentOptions: Optional[PAYMENTOPTIONS]
     reason: Optional[str]  # Operation label transmited in payment system
+    registerAlias: Optional[
+        ALIAS
+    ]  # When set to "1", an alias will be registered when the payment will be completed,
+    alias: Optional[AliasOption]
+    unsignificantAmount: Optional[UNSIGNIFICANTAMOUNT]  # Unsignificant amount flag
 
 
 class PayinPaymentIframeResponse(TypedDict):
@@ -301,6 +311,7 @@ class PayinRefundResponse(TypedDict):
     orderId: Optional[
         str
     ]  # Order id obtained in order creation and to provide in each next request
+    transactionId: Optional[str]  # Id of the payment transaction
 
 
 class PayinMandateRequest(TypedDict):

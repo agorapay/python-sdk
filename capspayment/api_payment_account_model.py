@@ -4,7 +4,7 @@ from typing import List, Literal, Optional, TypedDict
 
 from model import DAYOFMONTH, DAYOFWEEK, MONTH, Amount
 
-FREQUENCY = Literal["0", "1", "2", "3", "10"]
+FREQUENCY = Literal["0", "1", "2", "3", "10", "11"]
 STATUS = Literal["A", "D", "R", "S"]
 STATUSLABEL = Literal["activated", "deactivated", "registered", "suspended"]
 PAYMETHODKEY = Literal["SCT"]
@@ -27,6 +27,7 @@ class Account(TypedDict):
     floorLimit: Optional[str]  # Minimum amount for payout auto
     balance: Optional[str]
     availableBalance: Optional[str]
+    reference: Optional[str]  # Account reference
 
 
 class PaymentAccount(TypedDict):
@@ -43,6 +44,7 @@ class PaymentAccount(TypedDict):
     payoutAuto: Optional[str]  # 1 if payout auto activated
     floorLimit: Optional[str]  # Minimum amount for payout auto
     reference: Optional[str]  # Account reference
+    iban: Optional[str]  # International Bank Account Number
 
 
 class PaymentAccountRequest(TypedDict):
@@ -107,8 +109,9 @@ class PaymentAccountPayoutAutoRequest(TypedDict):
 
     accountNumber: str  # A string representing the account number
     amount: str  # Recharge amount
-    frequency: FREQUENCY  # Enum: [0, 1, 2, 3, 10]
-    # 0: deactivate 1: once a day 2: once a week 3: once a month 10: Automatic on threshold
+    frequency: FREQUENCY  # Enum: [0, 1, 2, 3, 10, 11]
+    # 0: deactivate 1: once a day 2: once a week 3: once a month
+    # 10: Automatic on threshold 11: On cashing
     dayOfWeek: Optional[DAYOFWEEK]  # Between 0 and 6
     dayOfMonth: Optional[DAYOFMONTH]  # Between 1 et 31
     paymentMethodAlias: str  # Alias for the payment method
@@ -191,3 +194,12 @@ class PaymentAccountReportResponse(TypedDict):
     fileContent: Optional[
         str
     ]  # The content of the file contening the proof in base64 encoding format
+
+
+class PaymentAccountSetAuthorizedOverdraftRequest(TypedDict):
+    """Data in input of paymentAccount/setAuthorizedOverdraft request"""
+
+    accountNumber: str  # A string representing the account number
+    authorizedOverdraftAmount: str # The value of the authorized overdraft amount,
+    # in decimal with max 2 digits after separator. Only digits and dot are authorized
+    currency: str  # Currency code in 3 characters ISO format

@@ -9,6 +9,8 @@ import utils
 from api_account_holder_model import (
     AccountHolderRegisterRequest,
     AccountHolderRegisterResponse,
+    AccountHolderOnlineRegisterRequest,
+    AccountHolderOnlineRegisterResponse,
     AccountHolderRegistrationDetailsRequest,
     AccountHolderRegistrationDetailsResponse,
     AccountHolderUnregisterRequest,
@@ -30,6 +32,12 @@ class ApiAccountHolder(BaseRequest):
     ) -> Union[AccountHolderRegisterResponse, Response]:
         """Start registering new account holder"""
         return self.request("POST", "/accountHolder/register", payload)
+
+    def online_register(
+        self, payload: AccountHolderOnlineRegisterRequest
+    ) -> Union[AccountHolderOnlineRegisterResponse, Response]:
+        """Start registering new account holder"""
+        return self.request("POST", "/accountHolder/onlineRegister", payload)
 
     def unregister(self, payload: AccountHolderUnregisterRequest) -> Response:
         """Unregister pending account holder registration"""

@@ -44,6 +44,12 @@ class ApiPayin(BaseRequest):
         """Submit a payment"""
         return self.request("POST", "/payin/payment", payload)
 
+    def payment_secure(
+        self, payload: PayinPaymentRequest
+    ) -> Union[PayinPaymentResponse, Response]:
+        """Submit a secure payment"""
+        return self.request("POST", "/payin/paymentSecure", payload)
+
     def payment_details(
         self, payload: PayinPaymentDetailsRequest
     ) -> Union[PayinPaymentDetailsResponse, Response]:
@@ -83,6 +89,12 @@ class ApiPayin(BaseRequest):
     ) -> Union[PayinPaymentIframeResponse, Response]:
         """Submit an order/get an authent code"""
         return self.request("POST", "/payin/paymentIframe", payload)
+
+    def payment_iframe_secure(
+        self, payload: PayinPaymentIframeRequest
+    ) -> Union[PayinPaymentIframeResponse, Response]:
+        """Submit an order/get an authent code"""
+        return self.request("POST", "/payin/paymentIframeSecure", payload)
 
     def refund(
         self, payload: PayinRefundRequest

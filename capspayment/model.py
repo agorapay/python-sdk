@@ -14,6 +14,7 @@ TRANSACTIONSTATUS = Literal[
     "created",
     "in_progress",
     "accepted",
+    "adjusted",
     "completed",
     "canceled",
     "refused",
@@ -56,9 +57,33 @@ DAYOFMONTH = Literal[
     "31",
 ]
 DAYOFWEEK = Literal["0", "1", "2", "3", "4", "5", "6"]
-ACCOUNTTYPE = Literal["1", "3", "4", "5", "6", "13", "14", "15", "16"]
+ACCOUNTTYPE = Literal[
+    "principal",
+    "collection",
+    "waiting",
+    "suspense",
+    "change",
+    "commission",
+    "collect",
+    "cantonment",
+    "technical",
+    "reconciliation",
+    "cancel",
+    "freeze",
+    "voucher",
+    "reliquat",
+    "autorization",
+    "pre-autorization",
+    "counter autorization",
+    "counter pre-autorization",
+    "waiting refund",
+    "disbursement",
+    "tva",
+    "hit"
+]
 PAYMENTMETHODTYPEID = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
 INSTANTPAYMENT = Literal["EXPECTED"]
+UNSIGNIFICANTAMOUNT = Literal["0", "1"]
 
 
 class Response(TypedDict):
@@ -120,6 +145,13 @@ class AliasSimple(TypedDict):
     id: str  # Identifier for the alias
 
 
+class AliasOption(TypedDict):
+    """Alias Option Structure"""
+
+    id: Optional[str]  # Identifier for the alias
+    label: Optional[str]  # Label of the alias
+
+
 class Alias(TypedDict):
     """Alias Structure"""
 
@@ -129,7 +161,7 @@ class Alias(TypedDict):
         str
     ]  # First 6 and last 4 digits of the PAN for card or Masqued IABN for SDD
     label: Optional[str]  # Label of the alias
-    brand: Optional[str]  # Card brand (CB, VISA, MASTERCARD) or bank code for IBAN
+    cardBrand: Optional[str]  # Card brand (CB, VISA, MASTERCARD) or bank code for IBAN
     bankCode: Optional[str]
 
 
@@ -157,6 +189,31 @@ class Details(TypedDict):
     postalCode: Optional[str]
     country: Optional[str]  # Country in 3 letters ISO format
     iban: Optional[str]
+    email: Optional[str]
+    state: Optional[str]
+    gender: Optional[str]
+    phoneNumber: Optional[str]
+    sequence: Optional[SEQUENCE]  # Mandate sequence. Enum: [ OOFF, FRST, RCUR, FNAL ]
+    reference: Optional[
+        str
+    ]  # For payment with mandate, this field is the reference to the mandate for sequence
+    # RCUR or LAST. For payment with card, this field is the transactionId of the first
+    # authorization transaction
+    socialReason: Optional[str]  # Compagny name
+    address2: Optional[str]  # Additional address
+    bic: Optional[str]  # Business Identifier Code allocated to a financial institution
+    # by the ISO 9362 Registration Authority
+
+
+class DetailsNoIban(TypedDict):
+    """Payment Details Information"""
+
+    firstName: Optional[str]
+    lastName: Optional[str]
+    address: Optional[str]  # Road name and number
+    city: Optional[str]
+    postalCode: Optional[str]
+    country: Optional[str]  # Country in 3 letters ISO format
     email: Optional[str]
     state: Optional[str]
     gender: Optional[str]
