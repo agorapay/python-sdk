@@ -26,7 +26,6 @@ class Operation(TypedDict):
     date: Optional[str]  # operation Date
     side: OPERATIONSIDE  # Direction of the operation. Enum: [PAYIN, PAYOUT, TRANSFER]
     type: OPERATIONTYPE  # Type of an operation
-    # Enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
     status: OPERATIONSTATUS  # Status of an operation
     # Enum: [registered, waiting, cashed, cancelled, suspended, rejected]
     breakdownList: Optional[List[BreakDownSimple]]  # List of breakdown for this payment
@@ -76,6 +75,8 @@ class OperationsListRequest(TypedDict):
     sellerAccountNumber: Optional[str]  # Account number of the merchant
     parentAccountNumber: Optional[str]  # A string representing the account number
     internalRemittance: Optional[str]  # Internal Remittance information
+    operationType: Optional[OPERATIONTYPE]  # Type of an operation
+    operationStatus: Optional[OPERATIONSTATUS]  # Status of an operation
 
 
 class OperationsListResponse(TypedDict):

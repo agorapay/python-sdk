@@ -14,6 +14,7 @@ from api_payment_method import ApiPaymentMethod
 from api_payout import ApiPayout
 from api_selfcare import ApiSelfCare
 from api_transfer import ApiTransfer
+from api_v_iban import ApiVIban
 from config import Config
 
 
@@ -77,3 +78,7 @@ class CAPSPaymentAPI:
     def mandate_api(self) -> ApiMandate:
         """Get Mandate API"""
         return ApiMandate(self.config)
+
+    def v_iban_api(self) -> ApiVIban:
+        """Get Virtual IBAN API"""
+        return ApiVIban(self.config)

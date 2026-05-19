@@ -55,9 +55,6 @@ class Transaction(TypedDict):
     status: TRANSACTIONSTATUS  # Status of a transaction
     amount: Amount  # Amount structure
     type: Optional[OPERATIONTYPE]  # Type of the operation
-    # 1: Purchase 2: Refund 3: Manual
-    # 4: Transfer 5: Payment 6: Reload/Payout
-    # 7: Authorization 8: Pre-authorization 9: Unpaid 11: Fees
 
 
 class PayinPaymentRequest(TypedDict):

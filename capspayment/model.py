@@ -21,7 +21,19 @@ TRANSACTIONSTATUS = Literal[
     "abandonned",
     "refund",
 ]
-OPERATIONTYPE = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "11"]
+OPERATIONTYPE = Literal[
+    "Authorization",
+    "Fee",
+    "Manual",
+    "Payment",
+    "Pre-autho",
+    "Purchase",
+    "Refund",
+    "Reject",
+    "Reload",
+    "Transfer",
+    "Unpaid"
+]
 MONTH = Literal["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 DAYOFMONTH = Literal[
     "1",

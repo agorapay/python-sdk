@@ -8,6 +8,7 @@ REGULATEDSOCIETY = Literal["Y", "N"]
 USPERSON = Literal["Y", "N"]
 FILEEXT = Literal["JPEG", "JPG", "PNG", "PDF", "DOC"]
 FILEEXTUPLOAD = Literal["JPEG", "PNG", "PDF", "DOC", "XLS", "XLSX"]
+FILEEXTDETAIL = Literal["PDF"]
 MANDATORY = Literal["Y", "N"]
 RESIDENT = Literal["R", "N"]
 VALUE = Literal["Y", "N", "NC"]
@@ -124,7 +125,7 @@ class RequirementResponse(TypedDict):
 class RequirementResponseDetailDocument(TypedDict):
     """Requirement Response Detail Document Structure"""
 
-    fileExt: Optional[FILEEXT]  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
+    fileExt: Optional[FILEEXTDETAIL]  # Type of file provided in fileContent (PDF)
     fileContent: Optional[str]  # Content of the document base64 encoded
     status: DOCSTATUS  # Document status
     receiptDate: Optional[str]  # Date of document reception in ISO8601 format
@@ -142,7 +143,7 @@ class RequirementResponseDetail(TypedDict):
     label: str  # Requirement description
     code: Optional[str]  # Requirement code identification
     status: Optional[REQUIREMENTSTATUS]  # Requirement status
-    fileExt: Optional[FILEEXT]  # Type of file provided (JPEG, JPG, PNG, PDF, DOC)
+    fileExt: Optional[FILEEXTDETAIL]  # Type of file provided in fileContent (PDF)
     fileContent: Optional[str]  # Content of the document base64 encoded
     documents: Optional[List[RequirementResponseDetailDocument]]  # List of documents
 
@@ -210,7 +211,7 @@ class OnlineRegisterPersonRequest(TypedDict):
     birthPlaceZipCode: Optional[str]
     physicalAddress: Optional[RegisterAddress]
     percentageHeld: Optional[str]
-    usPerson: Optional[USPERSON]
+    usPerson: USPERSON
 
 
 class RegisterPersonResponse(TypedDict):
@@ -334,14 +335,13 @@ class AccountHolderOnlineRegisterRequest(TypedDict):
     commercialAddress: Optional[RegisterAddress]
     turnover: str  # Current or last year turnover in account currency code unit
     regulatedSociety: REGULATEDSOCIETY  # Y or N
-    usPerson: Optional[USPERSON]  # Y or N
+    usPerson: USPERSON  # Y or N
     physicalPersons: List[
         OnlineRegisterPersonRequest
     ]  # At least one person must be provided with CP role
     account: RegisterAccount
     owner: Owner
-    scoring: Optional[str]  # Scoring information
-    introducerRiskLevel: Optional[str]  # Vigilance level
+    introducerRiskLevel: str  # Vigilance level
     introducerRiskScore: Optional[str]  # Scoring
     taxAddress: Optional[RegisterAddress]  # Tax address for a legal entity
     riskCountry: Optional[List[RiskCountry]]  # For all countries considered high-risk

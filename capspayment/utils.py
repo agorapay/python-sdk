@@ -2,6 +2,7 @@
 Utils
 """
 
+import base64
 import json
 import logging
 import mimetypes
@@ -49,6 +50,12 @@ def json_tobytes(data: dict) -> BytesIO:
     return BytesIO(bytes(json_content, "utf-8"))
 
 
+def file_to_base64_bytes(data: str) -> BytesIO:
+    """Convert file content base64 to BytesIO"""
+    encoded = base64.b64encode(data.encode("utf-8"))
+    return BytesIO(encoded)
+
+
 def file_tobytes(data: str) -> BytesIO:
     """Convert file content to BytesIO"""
     return BytesIO(bytes(data, "utf-8"))
@@ -64,9 +71,17 @@ def get_file_content_type(file_name: str) -> str:
 
 def get_file_multipart(file_name: str, file_content: str) -> tuple:
     """Get multipart file data"""
+
+    file_obj = file_to_base64_bytes(file_content)
+
+    headers = {
+        "Content-Transfer-Encoding": "base64",
+        "Content-Disposition": f'form-data; name="file"; filename="{file_name}"'
+    }
+
     return (
         "file",
-        (file_name, file_tobytes(file_content), get_file_content_type(file_name)),
+        (file_name, file_obj, get_file_content_type(file_name), headers),
     )
 
 

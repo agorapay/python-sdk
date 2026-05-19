@@ -74,6 +74,7 @@ response = api_request.payment_account(payload)
 | Payout          | payout_api          |
 | SelfCare        | selfcare_api        |
 | Transfer        | transfer_api        |
+| Virtual IBAN    | v_iban_api          |
 
 &nbsp;
 
@@ -196,6 +197,18 @@ You will find in this table which function to use for each API "Transfert" endpo
 | Transfer Endpoint | SDK Functions               | Method |
 | ----------------- | --------------------------- | ------ |
 | /transfer/create  | ApiTransfer.create(payload) | POST   |
+
+&nbsp;
+
+## List SDK functions to use for API Virtual Iban
+
+You will find in this table which function to use for each API "Virtual Iban" endpoint :
+
+| Virtual Iban Endpoint | SDK Functions                 | Method |
+| --------------------- | ----------------------------- | ------ |
+| /vIban/create         | ApiVIban.create(payload)      | POST   |
+| /vIban/delete         | ApiVIban.delete(payload)      | POST   |
+| /vIban/list           | ApiVIban.v_iban_list(payload) | GET    |
 
 &nbsp;
 
